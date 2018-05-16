@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 회원 정보 처리 SQL -->
+<mapper namespace="DAO.MemberMapper">
+
+
+<insert id="insertMember" parameterType="Member">
+insert into member
+(
+member_seq 
+,ID
+,password
+,indate
+)
+values
+(
+memberseq.nextval
+,#{id}
+,#{password}
+,sysdate
+)
+</insert>
+
+<select id="searchMember" parameterType="Member" resultType="Member">
+select 
+Member_seq
+,ID 
+,password
+,playnum 
+,correctnum 
+,winningRate 
+,totalplaytime 
+,indate
+,memo 
+from member
+where id=#{id}
+</select>
+<update id="updateMember"  parameterType="Member" >
+update member
+set password = #{password}
+where id = #{id}
+</update>
+<select id="bringFilterWord" resultType="FilterWord">
+select 
+filter_seq
+,filterword
+from filtering
+</select>
+<select id="bringWord" resultType="Word">
+select 
+word_seq
+,word
+from wordList
+</select>
+<insert id="insertGame" parameterType="Game">
+insert into game
+(
+game_seq
+,id
+,word
+,starttime
+)
+values
+(
+#{game_seq}
+,#{id}
+,#{word}
+,sysdate
+)
+</insert>
+<update id="updateGame"  parameterType="Game" >
+update game
+set 
+usertype = #{usertype}
+,endtime=sysdate
+where
+game_seq = #{game_seq} 
+and
+id = #{id}
+</update>
+
+<update id="updateGame2"  parameterType="Game" >
+update game
+set 
+playtime= #{playtime}
+where
+game_seq = #{game_seq} 
+and
+id = #{id}
+</update>
+<update id="updateGameMember"  parameterType="Member" >
+update member
+set 
+playnum=#{playnum}
+,correctnum=#{correctnum}
+,totalplaytime=#{totalplaytime}
+where
+id = #{id}
+</update>
+<update id="updateGameMember2"  parameterType="Member" >
+update member
+set 
+winningrate=#{winningRate}
+where
+id = #{id}
+</update>
+<select id="bringGame" parameterType="Game" resultType="Game">
+select 
+game_seq
+,id
+,usertype
+,word
+,starttime
+,endtime
+,playtime
+from game
+where 
+game_seq = #{game_seq}
+and 
+id = #{id}
+</select>
+<select id="bringGameSeq" resultType="int">
+select Max(game_seq)
+from game
+</select>
+</mapper>
